@@ -1,0 +1,18 @@
+larget-wcc: Directed
+  Nodes:                    131188
+  Edges:                    322486
+  Zero Deg Nodes:           0
+  Zero InDeg Nodes:         78365
+  Zero OutDeg Nodes:        26008
+  NonZero In-Out Deg Nodes: 26815
+  Unique directed edges:    322486
+  Unique undirected edges:  322371
+  Self Edges:               15035
+  BiDir Edges:              15265
+  Closed triangles:         41388
+  Open triangles:           51596519
+  Frac. of closed triads:   0.000802
+  Connected component size: 1.000000
+  Strong conn. comp. size:  0.032953
+  Approx. full diameter:    14
+  90% effective diameter:  5.606538
