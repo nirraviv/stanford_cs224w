@@ -56,46 +56,147 @@
 % BEGIN HOMEWORK HERE
 \begin{document}
 
-% Question 1.1
-\newquestion{1.1}
-
-% Question 1.2
-\newquestion{1.2}
-
-% Question 2.1
-\newquestion{2.1}
-
-% Question 2.2
-\newquestion{2.2}
-
-% Question 2.3a
-\newquestion{2.3a}
-
-% Question 2.3b
-\newquestion{2.3b}
-
 % Question 3.1
 \newquestion{3.1}
 
+In this question we need to prove the following:
+\begin{equation} \label{eq:prove}
+	\Delta Q = Q_{A(fter)} - Q_{B(efore)} = \left[\frac{\Sigma_{in}+k_{i,in}}{2m} - \left(\frac{\Sigma_{tot}+k_i}{2m}\right)^2\right] - \left[\frac{\Sigma_{in}}{2m} - \left(\frac{\Sigma_{tot}}{2m}\right)^2 - \left(\frac{k_i}{2m}\right)^2\right]
+\end{equation}
+where the modularity $Q$ for the graph $G$ and communities $S$ is defined as follows:
+\begin{equation} \label{eq:modularity}
+	Q(G,S) = \frac{1}{2m}\sum_{s\in S}\sum{i,j \in s} \left(A_{ij}-\frac{k_i k_j}{2m}\right) = \sum_{s \in S} \left[\frac{2|E(s)|}{2m} - \left(\frac{\sum_{v \in s} k_v}{2m}\right)^2\right]
+\end{equation}
+where, $|E(s)|$ is the weighted edges within community $s$.
+If we consider our graph with 3 communities $S={i, C, D}$. $i$ is the node we want to move to $C$ and $D$ is the rest of the graph (as in Fig. 2). We can calculate $Q_A$ and $Q_B$ using Eq.~\eqref{eq:modularity}:
+\begin{equation} \label{eq:before}
+	Q_B = \underbrace{\frac{\Sigma_{in}}{2m} - \left(\frac{k_i}{2m}\right)^2}_{C} +  \underbrace{0 - \left(\frac{\Sigma_{tot}}{2m}\right)^2}_{i} 
+\end{equation}
+\begin{equation} \label{eq:after}
+	Q_A = \frac{\Sigma_{in} + 2\cdot \frac{k_{i,in}}{2}}{2m} - \left(\frac{\Sigma_{tot} + k_i}{2m}\right)^2
+\end{equation}
+Note that we get Eq.~\eqref{eq:prove} from Eq.~\eqref{eq:after} and \eqref{eq:before}.
 % Question 3.2
 \newquestion{3.2}
+Given graph $G$, after the first iteration of the Louvain algorithm we get graph $H$ with the following:
+\begin{itemize}
+	\item The weight of any edge between two distinct nodes in $H$ is $1$.
+	\item The weight of any self-edge in $H$ is $12$.
+	\item The modularity from Eq.~\eqref{eq:prove} of $H$ is $Q = 4 \cdot \left[\frac{12}{56} - \left(\frac{16}{56}\right)^2\right] = 0.5306$.
+\end{itemize}
 
+If another iteration of this algorithm performed to produce, the graph $J$ has the following:
+\begin{itemize}
+	\item The weight of any edge between two distinct nodes in $J$ is $2$.
+	\item The weight of any self-edge in $J$ is $26$.
+	\item The modularity is $Q = 2 \cdot \left[\frac{26}{56} -\left(\frac{30}{56}\right)^2\right] = 0.3546$.
+\end{itemize}
 % Question 3.3
 \newquestion{3.3}
-
-% Question 3.3
-\newquestion{3.4}
+Given graph $G_{big}$, after the first iteration of the Louvain algorithm we get graph $H_{big}$ with the following:
+\begin{itemize}
+	\item The weight of any edge between two distinct nodes in $H_{big}$ is $1$.
+	\item The weight of any self-edge in $H_{big}$ is $12$.
+	\item The modularity from Eq.~\eqref{eq:prove} of $_{big}$ is $Q = 32 \cdot \left[\frac{12}{448} - \left(\frac{16}{448}\right)^2\right] = 0.8163$.
+\end{itemize}
+If another iteration of this algorithm performed to produce, the graph $J_{big}$ has the following:
+\begin{itemize}
+	\item The weight of any edge between two distinct nodes in $J_{big}$ is $1$.
+	\item The weight of any self-edge in $J_{big}$ is $26$.
+	\item The modularity is $Q = 16 \cdot \left[\frac{26}{448} -\left(\frac{30}{448}\right)^2\right] = 0.8568$.
+\end{itemize}
 
 % Question 4.1
 \newquestion{4.1}
+\begin{enumerate}[(i)]
+\item The Laplacian matrix is given by $L=D-A$ where $D$ is the diagonal matrix of degrees and $A$ is the adjacency matrix. Since our matrix $G$ is undirected
+\begin{equation*}
+	A = \sum_{(i,j)\in E} \mathbf{e}_i \mathbf{e}_j^T + \mathbf{e}_j \mathbf{e}_i^T
+\end{equation*}
+and 
+\begin{equation*}
+	D = \sum_{(i,j)\in E} \mathbf{e}_i \mathbf{e}_i^T + \mathbf{e}_j \mathbf{e}_j^T
+\end{equation*}
+where, $\mathbf{e}_i$ is an $n$-dimensional column vector with 1 at position $n$ and $0$'s elsewhere. \\
+Therefore, 
+\begin{equation} \label{eq:1}
+	L = D-A = \sum_{(i,j)\in E} \mathbf{e}_i \mathbf{e}_i^T + \mathbf{e}_j \mathbf{e}_j^T - \mathbf{e}_i \mathbf{e}_j^T - \mathbf{e}_j \mathbf{e}_i^T = \sum_{(i,j)\in E} (\mathbf{e}_i - \mathbf{e}_j)(\mathbf{e}_i - \mathbf{e}_j)^T
+\end{equation}
+
+\item From Eq.~\eqref{eq:1}:
+\begin{equation} \label{eq:2}
+	\mathbf{x}^T L \mathbf{x} = 
+	\sum_{(i,j)\in E} \mathbf{x}^T(\mathbf{e}_i - \mathbf{e}_j)(\mathbf{e}_i - \mathbf{e}_j)^T\mathbf{x} = 
+	\sum_{(i,j)\in E} (x_i - x_j)(x_i - x_j) =
+	\sum_{(i,j)\in E} (x_i - x_j)^2
+\end{equation}
+
+\item From Eq.~\eqref{eq:2}:
+\begin{align} \label{eq:3a}
+	\mathbf{x}^T L \mathbf{x} = &
+	\sum_{(i,j)\in E} (x_i - x_j)^2 = 
+	\sum_{\substack{(i,j)\in E \\ i\in S, j\in \bar{S}}} \left( \sqrt{\frac{\text{vol}(\bar{S})}{\text{vol}({S})}} + \sqrt{\frac{\text{vol}({S})}{\text{vol}(\bar{S})}} \right)^2 = \\ \nonumber
+	& \tilde{c}\cdot \left(\frac{\text{vol}(\bar{S})}{\text{vol}({S})} + \frac{\text{vol}({S})}{\text{vol}(\bar{S})} + 2 \right) = 
+	\tilde{c}\cdot \left(\frac{\text{vol}(\bar{S}) + \text{vol}({S})}{\text{vol}({S})} + \frac{\text{vol}({S}) + \text{vol}(\bar{S})}{\text{vol}(\bar{S})} \right) = \\ \nonumber
+	& c \cdot \left(\frac{\text{cut}({S})}{\text{vol}({S})} + \frac{\text{cut}(\bar{S})}{\text{vol}(\bar{S})} \right) = c \cdot \text{NCUT}(S)
+\end{align}
+where $\tilde{c}$ is the number of edges in the cut and $\text{cut}(S) = \text{cut}(\bar{S})$.
+
+\item Note that $\text{vol}(S) = \sum_{i\in S} d_i$:
+\begin{align} \label{eq:4}
+	\mathbf{x}^TD\mathbf{e} =& \mathbf{x}^T \mathbf{d} = \sum_i x_i d_i = 
+	\sum_{i\in S}\sqrt{\frac{\text{vol}(\bar{S})}{\text{vol}({S})}}d_i - \sum_{i\in \bar{S}} \sqrt{\frac{\text{vol}({S})}{\text{vol}(\bar{S})}}d_i = \\ \nonumber 
+	&\sqrt{\text{vol}(\bar{S})\text{vol}({S})} - \sqrt{\text{vol}({S})\text{vol}(\bar{S})} = 0
+\end{align}
+
+\item 
+\begin{equation} \label{eq:5}
+	\mathbf{x}^TD\mathbf{x} = \sum_i x_i^2 d_i = \sum_{i\in S} \frac{\text{vol}(\bar{S})}{\text{vol}({S})}d_i + \sum_{i\in \bar{S}} \frac{\text{vol}({S})}{\text{vol}(\bar{S})}d_i = \text{vol}(\bar{S}) + \text{vol}({S}) = \sum_i d_i = 2m
+\end{equation}
+\end{enumerate}
 
 % Question 4.2
 \newquestion{4.2}
+In this question we wish to solve the following problem:
+\begin{align*}
+\min_{x\in \mathbb{R}^n} \quad &\frac{x^TLx}{x^TDx} \\
+\text{s.t.}: \quad	&x^TDe=0\\
+				&x^TDx=2m
+\end{align*}
+by substitute $z=D^{1/2}x$ our new problem is:
+\begin{align*}
+\min_{x\in \mathbb{R}^n} \quad &\frac{z^T\tilde{L}z}{z^Tz} \\
+\text{s.t.}: \quad	&z^TD^{1/2}e=0\\
+&z^Tz=2m
+\end{align*}
+where $\tilde{L}$ is the normalized graph Laplacian.
 
+Using Rayleigh quotient we can minimize this problem by solving the generalized eigenvalue system,
+\begin{equation}\label{eq:eig}
+\tilde{L}z=\lambda z
+\end{equation}
+Note that $z_1=D^{1/2}e$ is an eigenvector of \eqref{eq:eig} with eigenvalue $0$, thus $z_1$ is correspondence to the smallest eigenvalue, since $\tilde{L}$ is positive semi-definite matrix since $L$ is one (as we've seen).
+
+Thus, the second eigenvector $z_2$ fulfill the first constraint since it is orthogonal to $z_0$ (thus, $z_2^TD^{1/2}e=z_2^T z_1=0$). The second constraint is fulfilled as in Eq.~\eqref{eq:5}, $z_2^Tz_2=x_2^TDx_2=2m$.
+	
 % Question 4.3
 \newquestion{4.3}
+Given the modularity as:
+\begin{equation*}
+Q(y)=\frac{1}{2m} \sum_{1\leq i, j\leq n} \left[A_{ij}-\frac{d_id_j}{2m}\right]I_{y_i=y_j}
+\end{equation*}
+where $y_i$ is 1 if $i\in S$ and $-1$ if $i \in \bar{S}$.
 
-
+\begin{equation*}\label{eq:Q1}
+	\sum_{1\leq i, j\leq n}A_{ij}I_{y_i=y_j} = 2m - 2\sum_{i\in S, j\in \bar{S}}A_{ij} = 2m - 2\text{cut}(S) 
+\end{equation*}
+\begin{equation*}\label{eq:Q2}
+	\sum_{1\leq i, j\leq n}\frac{d_id_j}{2m}I_{y_i=y_j} = \frac{(2m)^2}{2m} - \sum_{\substack{(i,j)\in E \\ i\in S, j\in \bar{S}}}\frac{d_id_j}{2m} = 2m - \frac{2\text{vol}(S)\text{vol}(\bar{S})}{2m} = 2m - \frac{\text{vol}(S)\text{vol}(\bar{S})}{m}
+\end{equation*}
+thus, by applying both last equations into the first,
+\begin{equation*}
+	Q(y) = \frac{1}{2m}\left(-2\text{cut}(S) + \frac{\text{vol}(S)\text{vol}(\bar{S})}{m}\right)
+\end{equation*}
 % Information sheet
 % Fill out the information below (this should be the last page of your assignment)
 \addinformationsheet

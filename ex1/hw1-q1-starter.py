@@ -25,8 +25,8 @@ def genErdosRenyi(N=5242, E=14484):
     """
     ############################################################################
     # TODO: Your code here!
-    Graph = None
-
+    Graph = snap.GenRndGnm(snap.PUNGraph, N, E, False)
+    # snap.DrawGViz(Graph, snap.gvlDot, 'random_graph.png', 'random graph')
     ############################################################################
     return Graph
 
@@ -41,7 +41,9 @@ def genCircle(N=5242):
     """
     ############################################################################
     # TODO: Your code here!
-    Graph = None
+    Graph = snap.GenCircle(snap.PUNGraph, N, 1, False)
+    # snap.DrawGViz(Graph, snap.gvlDot, 'circle_graph.png', 'circle graph')
+
     ############################################################################
     return Graph
 
@@ -58,6 +60,10 @@ def connectNbrOfNbr(Graph, N=5242):
     ############################################################################
     # TODO: Your code here!
 
+    for node in range(N):
+        Graph.AddEdge(node, (node+2) % N)
+    # snap.DrawGViz(Graph, snap.gvlDot, 'circle_graph2.png', 'circle graph with neighbors of neighbors')
+
     ############################################################################
     return Graph
 
@@ -73,12 +79,20 @@ def connectRandomNodes(Graph, M=4000):
     """
     ############################################################################
     # TODO: Your code here!
+    N = Graph.GetNodes()
+    node1, node2 = 0, 1
+    for i in range(M):
+        while Graph.IsEdge(node1, node2) or node1 == node2:
+            node1 = np.random.randint(N)
+            node2 = np.random.randint(N)
+        Graph.AddEdge(node1, node2)
+    # snap.DrawGViz(Graph, snap.gvlDot, 'small_world.png', 'small world')
 
     ############################################################################
     return Graph
 
 
-def genSmallWorld(N=5242, E=14484):
+def genSmallWorld(N=5242, E=14484, M=4000):
     """
     :param - N: number of nodes
     :param - E: number of edges
@@ -88,7 +102,7 @@ def genSmallWorld(N=5242, E=14484):
     """
     Graph = genCircle(N)
     Graph = connectNbrOfNbr(Graph, N)
-    Graph = connectRandomNodes(Graph, 4000)
+    Graph = connectRandomNodes(Graph, M)
     return Graph
 
 
@@ -103,7 +117,9 @@ def loadCollabNet(path):
     """
     ############################################################################
     # TODO: Your code here!
-    Graph = None
+    Graph = snap.LoadEdgeList(snap.PUNGraph, path, 0, 1)
+    snap.DelSelfEdges(Graph)
+    # snap.DrawGViz(Graph, snap.gvlDot, 'collab.png', 'real world collaboration')
 
     ############################################################################
     return Graph
@@ -119,7 +135,10 @@ def getDataPointsToPlot(Graph):
     """
     ############################################################################
     # TODO: Your code here!
-    X, Y = [], []
+    result_degree = snap.TIntV()
+    snap.GetDegSeqV(Graph, result_degree)
+    result_degree = np.array(result_degree)
+    X, Y = np.unique(result_degree, return_counts=True)
 
     ############################################################################
     return X, Y
@@ -131,7 +150,7 @@ def Q1_1():
     """
     global erdosRenyi, smallWorld, collabNet
     erdosRenyi = genErdosRenyi(5242, 14484)
-    smallWorld = genSmallWorld(5242, 14484)
+    smallWorld = genSmallWorld(5242, 14484, 4000)
     collabNet = loadCollabNet("ca-GrQc.txt")
 
     x_erdosRenyi, y_erdosRenyi = getDataPointsToPlot(erdosRenyi)
@@ -167,7 +186,7 @@ def calcClusteringCoefficientSingleNode(Node, Graph):
     """
     ############################################################################
     # TODO: Your code here!
-    C = 0.0
+    C = snap.GetNodeClustCf(Graph, Node)
 
     ############################################################################
     return C
@@ -182,7 +201,7 @@ def calcClusteringCoefficient(Graph):
     ############################################################################
     # TODO: Your code here! If you filled out calcClusteringCoefficientSingleNode,
     #       you'll probably want to call it in a loop here
-    C = 0.0
+    C = snap.GetClustCf(Graph, -1)
 
     ############################################################################
     return C
