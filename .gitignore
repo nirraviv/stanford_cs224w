@@ -8,3 +8,4 @@ env/
 *.gz
 .idea/
 *.dot
+__pycache__

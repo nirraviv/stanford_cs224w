@@ -1,0 +1,195 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage{titlesec}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+
+\titlespacing{\subsubsection}{0pt}{0pt}{0pt}
+
+% No page numbers
+%\pagenumbering{gobble}
+
+% INFORMATION SHEET (DO NOT EDIT THIS PART) ---------------------------------------------
+\newcommand{\addinformationsheet}{
+\clearpage
+\thispagestyle{empty}
+\begin{center}
+\LARGE{\bf \textsf{Information sheet\\CS224W: Machine Learning with Graphs}} \\*[4ex]
+\end{center}
+\vfill
+\textbf{Assignment Submission } Fill in and include this information sheet with each of your assignments.  This page should be the last page of your submission.  Assignments are due at 11:59pm and are always due on a Thursday.  All students (SCPD and non-SCPD) must submit their homework via GradeScope (\url{http://www.gradescope.com}). Students can typeset or scan their homework. Make sure that you answer each (sub-)question on a separate page. That is, one answer per page regardless of the answer length. Students also need to upload their code on Gradescope. Put all the code for a single question into a single file and upload it.  
+\\
+\\
+\textbf{Late Homework Policy } Each student will have a total of {\em two} late periods. {\em Homework are due on Thursdays at 11:59pm PT and one late period expires on the following Monday at 11:59pm PT}.  Only one late period may be used for an assignment.  Any homework received after 11:59pm PT on the Monday following the homework due date will receive no credit.  Once these late periods are exhausted, any assignments turned in late will receive no credit.
+\\
+\\
+\textbf{Honor Code } We strongly encourage students to form study groups. Students may discuss and work on homework problems in groups. However, each student must write down their solutions independently, i.e., each student must understand the solution well enough in order to reconstruct it by him/herself.  Students should clearly mention the names of all the other students who were part of their discussion group. Using code or solutions obtained from the web (GitHub/Google/previous year's solutions etc.) is considered an honor code violation. We check all the submissions for plagiarism. We take the honor code very seriously and expect students to do the same. 
+\vfill
+}
+
+% MARGINS (DO NOT EDIT) ---------------------------------------------
+\oddsidemargin  0.25in \evensidemargin 0.25in \topmargin -0.5in
+\headheight 0in \headsep 0.1in
+\textwidth  6.5in \textheight 9in
+\parskip 1.25ex  \parindent 0ex \footskip 20pt
+% ---------------------------------------------------------------------------------
+
+% HEADER (DO NOT EDIT) -----------------------------------------------
+\newcommand{\problemnumber}{0}
+\newcommand{\myname}{name}
+\newfont{\myfont}{cmssbx10 scaled 1000}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[L]{\myfont Question \problemnumber, Homework 1, CS224W}
+%\fancyhead[R]{\bssnine \myname}
+\newcommand{\newquestion}[1]{
+\clearpage % page break and flush floats
+\renewcommand{\problemnumber}{#1} % set problem number for header
+\phantom{}  % Put something on the page so it shows
+}
+% ---------------------------------------------------------------------------------
+
+
+% BEGIN HOMEWORK HERE
+\begin{document}
+
+% Question 1.1
+\newquestion{1.1}
+Answers in hw2-q1-starter.py
+% Question 1.2
+\newquestion{1.2}
+\begin{enumerate}[(i)]
+	\item The belief at node 1 is:
+	\begin{align*}
+		b_1(x_1) =& \frac{1}{Z}\phi_1(x_1)m_{2,1}(x_1) = 
+		\frac{1}{Z}\phi_1(x_1) \sum_{x_2} \phi_2(x_2)\psi_{2,1}(x_2, x_1) m_{3,2}(x_2) m_{4,2}(x_2) = \\
+		&\frac{1}{Z}\phi_1(x_1) \sum_{x_2, x_3, x_4} \phi_2(x_2) \phi_3(x_4)\phi_4(x_4) \psi_{2,1}(x_2, x_1) \psi_{3,2}(x_3,x_2) \psi_{4,2}(x_4,x_2)
+	\end{align*}
+where,
+\begin{equation*}
+	\phi_i(x_i) = \phi_i(x_i,y_i) \\
+\end{equation*}
+and $Z$ denotes the normalizing constant that ensures elements in $b_1(x_1)$ sum to 1.
+
+\item 
+\begin{align*}
+	P(x_1 | \mathbf{y}) = &\sum_{x_2, x_3, x_4} P(\mathbf{x} | \mathbf{y}) = \frac{1}{Z}\sum_{x_2, x_3, x_4} \Pi_{i,k \; adjacent}\psi_{i,k}(x_i,x_k) \Pi_{j=1}^4\phi_j(x_j) = \\
+	& \frac{1}{Z}\sum_{x_2, x_3, x_4} \psi_{2,1}(x_2, x_1) \psi_{3,2}(x_3, x_2) \psi_{4,2}(x_4, x_2) \phi_1(x_1)\phi_2(x_2)\phi_3(x_3)\phi_4(x_4) = \\
+	&b_1(x_1)
+\end{align*}
+	
+\end{enumerate}
+% Question 2.1
+\newquestion{2.1}
+An example for a simple graph for which when minimizing the following loss, ${\mathcal{L}_{simple} = \sum_{(h,\ell,t)\in S} d(\mathbf{h}+\boldsymbol{\ell}, t)}$ is insufficient is a star graph. For example the center node's embedding will be $\mathbf{h}_{center}$, the i$^{th}$ satellite node embedding will be $\mathbf{h}_{sat}^{(i)}$ and the relation's embedding is $\boldsymbol{\ell}$. Therefore, in order to minimize the loss (to 0) $\mathbf{h}_{sat}^{(1)} = \mathbf{h}_{sat}^{(2)} = \dots = \mathbf{h}_{sat}^{(k)}$ for $k$ satellites. Thus, we can't distinguish between the satellites nodes.
+
+\newquestion{2.2}
+When $d(\mathbf{h}'+\boldsymbol{\ell}, \mathbf{t}') > d(\mathbf{h}+\boldsymbol{\ell}, \mathbf{t})$ for all the entities.
+% Question 2.3
+\newquestion{2.3}
+Set $d(\mathbf{h}'+\boldsymbol{\ell}, \mathbf{t}') - d(\mathbf{h}+\boldsymbol{\ell}, \mathbf{t}) > \gamma$
+% Question 2.4
+\newquestion{2.4}
+When two entities has the same relation (such as siblings in a family tree) than $\mathbf{h} = \mathbf{t}$ and $\boldsymbol{\ell}=0$ which is meaningless.
+Another problem is many-to-one (or one-to-many) as in Question 2.1.
+% Question 3.1
+\newquestion{3.1}
+\begin{enumerate}[(i)]
+	\item Given these 2 graphs, since the 2$^{nd}$ hop neighbors are different, a GNN with 3 message passing layers can distinguish them.
+	
+	\item As we have learn, every layer in a GNN can capture information of the local $K$-hop neighborhood for a given route. Since a cyclic subgraph fo length 10 can be model by minimum two $5$-hop routes, this task can perform perfectly with at least 5 GNN layers.
+\end{enumerate}
+
+% Question 3.2
+\newquestion{3.2}
+\begin{enumerate}[(i)]
+	\item The transition matrix of a 1-step uniform random walk, ${h_i^{(l+1)}= \frac{1}{|\mathcal{N}_i|}}\sum_{j\in \mathcal{N}_i} h_j^{(l)}$, is
+	\begin{equation*}
+	P = D^{-1}A
+	\end{equation*}
+	since the transition from node $u$ to node $v$ is ${P_{uv}=\Pr(\text{going from } u \text{ to } v |\text{ we are at } u)=\frac{1}{d_u}}$ if $(u,v) \in E$ (and $0$ otherwise).
+	
+	\item In the case ${h_i^{(l+1)}= \frac{1}{2}h_i^{(l)} + \frac{1}{2}\frac{1}{|\mathcal{N}_i|}}\sum_{j\in \mathcal{N}_i} h_j^{(l)}$ the corresponding transition matrix of a uniform random walk is
+	\begin{equation*}
+		P = \frac{1}{2} I + \frac{1}{2} D^{-1}A
+	\end{equation*}
+\end{enumerate}
+% Question 3.3
+\newquestion{3.3}
+\begin{enumerate}[(i)]
+	\item The standard random walk, ${h_i^{(l+1)}= \frac{1}{|\mathcal{N}_i|}\sum_{j\in \mathcal{N}_i} h_j^{(l)}}$, is a Markov chain with a transition matrix $P$ as in Question 3.2. Then, starting at embedding for node $i$ is $h_i^{(0)}$, the stationary distribution after infinite number of steps in the limit:
+	\begin{equation*}
+		\lim_{l\rightarrow \infty}(P^T)h_i^{(0)}
+	\end{equation*}
+	Thus, under certain conditions (irreducible and aperiodic transition matrix) the limiting distribution is identical to one that satisfies the following:
+	\begin{equation*}
+		\left(h_i^{(l)}\right)^{\star} = P^T \left(h_i^{(l)}\right)^{\star}
+	\end{equation*}
+	and in other words, the node embedding will converge as $l \rightarrow \infty$.
+\end{enumerate}
+% Question 3.3
+\newquestion{3.4}
+\begin{enumerate}[(i)]
+	\item The embedding of node $i$ when the \textit{update rule} of BFS is applied is:
+	\begin{equation*}
+		h_i^{(t+1)}= 
+		\begin{cases}
+			1, & h_i^{(t)}=1 \\
+			1, & \exists j; \; (j,i) \in E \land h_j^{(t)}=1 \\
+			0, & otherwise
+		\end{cases}
+	\end{equation*} 
+	where $h_i^{(1)}=1$ only for the source node (and $0$ otherwise).
+	
+	\item In order to learn the task perfectly, the the \textit{aggregation function} is:
+	\begin{equation*}
+	h_{\mathcal{N}_v}^{(l)} = \max(\{h_u^{(l-1)},\forall u \in \mathcal{N}_v \})
+	\end{equation*} 
+	and the \textit{message function} is:
+	\begin{equation*}
+	h_v^{(l)} = h_v^{(l-1)} \lor h_{\mathcal{N}_v}^{(l)}
+	\end{equation*}
+ 
+\end{enumerate}
+% Question 4.1
+\newquestion{4.1}
+
+% Question 4.2
+\newquestion{4.2}
+
+% Question 4.3
+\newquestion{4.3}
+
+
+% Information sheet
+% Fill out the information below (this should be the last page of your assignment)
+\addinformationsheet
+\vfill
+
+{\Large
+\textbf{Your name:} \hrulefill  % Put your name here
+\\
+
+
+\textbf{Email:} \underline{\hspace*{7cm}}  % Put your e-mail here
+\textbf{SUID:} \hrulefill  % Put your student ID here
+\\*[2ex] 
+}
+Discussion Group: \hrulefill   % List your study group here
+\\
+\vfill\vfill
+I acknowledge and accept the Honor Code.\\*[3ex]
+\bigskip
+\textit{(Signed)} 
+\hrulefill   % Replace this line with your initials
+\vfill
+
+
+
+
+
+
+\end{document}

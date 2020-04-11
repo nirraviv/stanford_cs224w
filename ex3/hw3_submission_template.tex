@@ -1,0 +1,160 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{enumerate}
+\usepackage{titlesec}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+
+\titlespacing{\subsubsection}{0pt}{0pt}{0pt}
+
+% No page numbers
+%\pagenumbering{gobble}
+
+% INFORMATION SHEET (DO NOT EDIT THIS PART) ---------------------------------------------
+\newcommand{\addinformationsheet}{
+\clearpage
+\thispagestyle{empty}
+\begin{center}
+\LARGE{\bf \textsf{Information sheet\\CS224W: Machine Learning with Graphs}} \\*[4ex]
+\end{center}
+\vfill
+\textbf{Assignment Submission } Fill in and include this information sheet with each of your assignments.  This page should be the last page of your submission.  Assignments are due at 11:59pm and are always due on a Thursday.  All students (SCPD and non-SCPD) must submit their homework via GradeScope (\url{http://www.gradescope.com}). Students can typeset or scan their homework. Make sure that you answer each (sub-)question on a separate page. That is, one answer per page regardless of the answer length. Students also need to upload their code on Gradescope. Make sure to upload all of your code as .py files.
+\\
+\\
+\textbf{Late Homework Policy } Each student will have a total of {\em two} late periods. {\em Homework are due on Thursdays at 11:59pm PT and one late period expires on the following Monday at 11:59pm PT}.  Only one late period may be used for an assignment.  Any homework received after 11:59pm PT on the Monday following the homework due date will receive no credit.  Once these late periods are exhausted, any assignments turned in late will receive no credit.
+\\
+\\
+\textbf{Honor Code } We strongly encourage students to form study groups. Students may discuss and work on homework problems in groups. However, each student must write down their solutions independently, i.e., each student must understand the solution well enough in order to reconstruct it by him/herself.  Students should clearly mention the names of all the other students who were part of their discussion group. Using code or solutions obtained from the web (GitHub/Google/previous year's solutions etc.) is considered an honor code violation. We check all the submissions for plagiarism. We take the honor code very seriously and expect students to do the same. 
+\vfill
+}
+
+% MARGINS (DO NOT EDIT) ---------------------------------------------
+\oddsidemargin  0.25in \evensidemargin 0.25in \topmargin -0.5in
+\headheight 0in \headsep 0.1in
+\textwidth  6.5in \textheight 9in
+\parskip 1.25ex  \parindent 0ex \footskip 20pt
+% ---------------------------------------------------------------------------------
+
+% HEADER (DO NOT EDIT) -----------------------------------------------
+\newcommand{\problemnumber}{0}
+\newcommand{\myname}{name}
+\newfont{\myfont}{cmssbx10 scaled 1000}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[L]{\myfont Question \problemnumber, Homework 3, CS224W}
+%\fancyhead[R]{\bssnine \myname}
+\newcommand{\newquestion}[1]{
+\clearpage % page break and flush floats
+\renewcommand{\problemnumber}{#1} % set problem number for header
+\phantom{}  % Put something on the page so it shows
+}
+% ---------------------------------------------------------------------------------
+
+
+% BEGIN HOMEWORK HERE
+\begin{document}
+
+
+\newquestion{1.1}
+Using outgoing and incoming BFS search for both Email and Epinions graphs for nodes 2018 and 224 respectively I determined the following:
+\begin{itemize}
+	\item Node 2018 in Email graph has 52104 out nodes and 1 in node (which is a self loop) thus this node is in the OUT of this graph.
+	\item Node 224 in Epinions graph has 47676 out nodes and 56459 in nodes. In addition, the intersection of the two sets size is 32223, thus, this node is in SCC of this graph.
+\end{itemize}
+
+\newquestion{1.2}
+From the desired figures we can learn about the IN, OUT and SCC of each of the Email and Epinions graphs.
+
+Regarding the Email graph: around 20\% of the nodes are in IN or SCC set while about 66\% of the nodes are in OUT of SCC set. 
+Regarding the Epinions graph: around 56\% of the nodes are in IN or SCC while about 59\% are in OUT or SCC. 	
+
+\newquestion{1.3}
+Regarding the Email graph, since the SCC is 13\% of the nodes, IN and OUT sets are 7\% AND 53\%, respectively. The disconnected (total nodes - number of nodes in max wcc) are 15\% thus TENDRILS and TUBES are 12\%.
+
+Regarding the Epinions graph, since the SCC is 42.5\%, the IN and OUT sets are 13.5\% and 16.5\% respectively. There are only 2 nodes in the DISCONNECTED set thus the TENDRILS and TUBES are 27.5\%.
+
+\newquestion{1.4}
+The probability a path exists between start node $u$ and end node $v$:
+\begin{equation*}
+	\Pr(u\rightarrow v) = \left(\Pr(u\in SCC) + \Pr(u\in IN)\right)\cdot \left(\Pr(v\in SCC) + \Pr(v\in OUT)\right).
+\end{equation*}
+For the Email graph $\Pr(u\rightarrow v)=0.2\cdot 0.66 = 0.132$.
+
+For the Epinions graph ${\Pr(u\rightarrow v)=0.56\cdot 0.59=0.33}$.
+
+\newquestion{2.1}
+In order to calculate the personalized PageRank vectors for the given users we will use the equation from class:
+\begin{equation*}
+	r = \beta M \cdot r + (1-\beta)t
+\end{equation*}
+where, $t$ is the teleport vector. Thus, we can calculate a user $u$ rank $r_u$ if we can find a linear combination of the given users' ranks. In other words, if the equation $T\cdot(a,b,c,d)^T=t_u$ has solution than $r_u = R\cdot (a,b,c,d)^T$. Where, $T=(t_A;t_B;t_C;t_D)$ and $R$ the same.
+\begin{enumerate}[(i)]
+	\item Eloise: $t_E=(0, 1, 0, 0, 0)^T=3t_A-3t_B+3t_C-2t_D$.
+	\item Felicity: $t_F=(0, 0, 0, 0, 1)^T$ cannot be computed with a linear combination of the given users' teleport.
+	\item Glynnis: $t_G=(0.1, 0.2, 0.3, 0.2, 0.2)^T=0.6t_A+0.3t_B+0.3t_C-0.2t_D$.
+\end{enumerate}
+where $T$ is the transposed operation.
+
+\newquestion{2.2}
+All the set of users with a solution to $t_u=T\cdot a$, where, as before, $T=(t_1;t_2; \dots t_n)$, ${a=(a_1, a_2, \dots a_n)^T}$ is vector of parameters and $t_u$ is the teleport vector of user $u$. Than, $r_u=R\cdot a$.
+
+\newquestion{2.3}
+We need to prove the following:
+\begin{equation}
+\label{eq:2}
+\mathbf{r}=\beta \mathbf{Mr} + \frac{1-\beta}{N}\mathbf{1}
+\end{equation}
+As we've seen in class:
+\begin{equation}
+\label{eq:1}
+	\mathbf{r}=\mathbf{Ar}=\beta \mathbf{Mr} + \frac{1-\beta}{N}\mathbf{11}^T\mathbf{r}.
+\end{equation}
+Since, $\sum_i r_i = \mathbf{1}^T\mathbf{r}=1$ then, $\mathbf{1}\mathbf{1}^T \mathbf{r}=\mathbf{1}$. So, equation \eqref{eq:1} becomes \eqref{eq:2}. 
+
+\newquestion{3.1}
+
+\newquestion{3.2}
+
+\newquestion{3.3}
+
+\newquestion{3.4}
+
+
+\newquestion{4.1}
+
+\newquestion{4.2}
+
+\newquestion{4.3}
+
+\newquestion{4.4}
+
+% Information sheet
+% Fill out the information below (this should be the last page of your assignment)
+\addinformationsheet
+\vfill
+
+{\Large
+\textbf{Your name:} \hrulefill  % Put your name here
+\\
+\\
+\textbf{Email:} \underline{\hspace*{7cm}}  % Put your e-mail here
+\textbf{SUID:} \hrulefill  % Put your student ID here
+\\*[2ex] 
+}
+Discussion Group: \hrulefill   % List your study group here
+\\
+\vfill\vfill
+I acknowledge and accept the Honor Code.\\*[3ex]
+\bigskip
+\textit{(Signed)} 
+\hrulefill   % Replace this line with your initials
+\vfill
+
+
+
+
+
+
+\end{document}
